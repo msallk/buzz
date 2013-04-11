@@ -1,10 +1,13 @@
+
+<form action="" method="post">
+<p>Input a Location:</p>
+<input type="text" name="location"></input>
+<p>Input a Topic:</p>
+<input type="text" name="topic"/">
+<p><input type="submit" value="Check"></p>
+</form>
+
 <p>List:</p>
 {% for location in locations %}
 <div>{{location.location}}</div>
 {% endfor %}
-
-<p>Input a Location:</p>
-<form action="" method="post">
-<p><input type="text" name="location" id="location"></input></p>
-<p><input type="submit" value="Check"></p>
-</form>
