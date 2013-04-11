@@ -1,5 +1,6 @@
 import cgi
 import webapp2
+import time
 
 from google.appengine.api import users
 from google.appengine.ext.webapp import template
@@ -18,6 +19,7 @@ class MainPage(webapp2.RequestHandler):
     def post(self):
     	location = Location(location = self.request.get('location'))
     	location.put()
+	time.sleep(2)
     	self.redirect('/');
 
 
