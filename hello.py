@@ -1,6 +1,9 @@
 import cgi
 import webapp2
+import urllib
+import json as simplejson
 import time
+import sys
 
 from google.appengine.api import users
 from google.appengine.ext.webapp import template
@@ -20,7 +23,19 @@ class MainPage(webapp2.RequestHandler):
     	location = Location(location = self.request.get('location'))
     	location.put()
 	time.sleep(2)
+        self.getXY(address = self.request.get('location'))
     	self.redirect('/');
+        
+    def getXY(self, address):
+        coordinate = urllib.urlopen("http://maps.googleapis.com/maps/api/geocode/json?address="+address+"&sensor=true")
+        dict = simplejson.loads(coordinate.read())
+        for result in dict["results"]: # result is a list of dictionaries 
+            print("*",result["geometry"]["location"]["lat"],"\n")
+            print("*",result["geometry"]["location"]["lng"],"\n")
+            x=result["geometry"]["location"]["lat"]
+            y=result["geometry"]["location"]["lng"]
+            break
+        return (x,y);
 
 
 class Guestbook(webapp2.RequestHandler):
