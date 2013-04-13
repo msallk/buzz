@@ -562,14 +562,41 @@ class BuzzExtractor:
 		for tweet in tweetList:
 			#print tweet[0]
 			self.putWords(tweet[0].lower())
-		print sorted(self.wordList.iteritems(), key=operator.itemgetter(1))
+		tmp = self.getPopularBuzz()
+		for it in tmp:
+			print it
+
+	def getPopularBuzz(self):
+		sortList = sorted(self.wordList.iteritems(), key=operator.itemgetter(1))
+		sortList.reverse()
+		if len(sortList) < 10:
+			bound = len(sortList)
+		else:
+			bound = 10;
+
+		ret = []
+		for i in range(0, bound - 1):
+			ret.append(sortList[i][0])
+		return ret
+
+	def splitTweet(self, tweet):
+		#tmp = tweet.split('\\.|,|\\(|\\)|;|:|[0-9]+[^ ]*')
+		#print len(tmp)
+		#words = []
+		#for it in tmp:
+		#	words = words + it.split(' ')
+		words = tweet.split()
+		return words
 
 	def putWords(self, tweet):
-		words = tweet.split(' ')
+		words = self.splitTweet(tweet)
 		for word in words:
 			#print word
 			if word in self.blackList:
 				continue
+			if word.startswith("http"):
+				continue
+
 			if word in self.wordList:
 				self.wordList[word] = self.wordList[word] + 1
 			else:
