@@ -1,4 +1,5 @@
 import operator
+import re
 
 class BuzzExtractor:
 	blackList = {	"a",
@@ -553,7 +554,9 @@ class BuzzExtractor:
 			"ht",
 			"oh",
 			"ff",
-			"de"
+			"de",
+			"",
+			" "
 		}
 
 	wordList = {}
@@ -563,9 +566,13 @@ class BuzzExtractor:
 	# return a list of pairs, which consists of buzz and tweets associated with this buzz
 	def getCategorizedTweets(self, tweetList):
 		self.putTweets(tweetList)
+		#for word in self.wordList:
+		#	print word
 		buzzes = self.getPopularBuzz()
-		#return self.categorizeTweet(buzzes, tweetList)
-		self.printTweet(self.categorizeTweet(buzzes, tweetList))
+		#for buzz in buzzes:
+		#	print buzz
+		return self.categorizeTweet(buzzes, tweetList)
+		#self.printTweet(self.categorizeTweet(buzzes, tweetList))
 
 	def putTweets(self, tweetList):
 		for tweet in tweetList:
@@ -581,25 +588,25 @@ class BuzzExtractor:
 			bound = 10;
 
 		ret = []
-		for i in range(0, bound - 1):
+		for i in range(0, bound):
 			ret.append(sortList[i][0])
 		return ret
 
 	# how to split a tweet
 	# need refine
 	def splitTweet(self, tweet):
-		#tmp = tweet.split('\\.|,|\\(|\\)|;|:|[0-9]+[^ ]*')
-		#print len(tmp)
-		#words = []
-		#for it in tmp:
-		#	words = words + it.split(' ')
 		words = tweet.split()
+		pattern = re.compile('[\W]', re.UNICODE)
+		for it in range(0, len(words)):
+			words[it] = str(pattern.sub('', words[it]))
 		return words
 
 	def putWords(self, tweet):
 		words = self.splitTweet(tweet)
 		for word in words:
 			#print word
+			if len(word) <= 1:
+				continue
 			if word in self.blackList:
 				continue
 			if word.startswith("http"):
@@ -629,10 +636,16 @@ class BuzzExtractor:
 		#check each tweet with every buzz
 		for tweet in tweetList:
 			for pair in ret:
-				if pair[0] in tweet[1].lower():
-					pair[1].append(tweet);
+				if self.belongToBuzz(pair[0],tweet[1].lower()):
+					pair[1].append(tweet)
 		return ret
 
+	def belongToBuzz(self, buzz, tweet):
+		words = self.splitTweet(tweet)
+		for word in words:
+			if buzz == word:
+				return True
+		return False
 
 #test part
 #b = BuzzExtractor()
