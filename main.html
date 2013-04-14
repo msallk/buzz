@@ -2,12 +2,16 @@
 <form action="" method="post">
 <p>Input a Location:</p>
 <input type="text" name="location"></input>
-<p>Input a Topic:</p>
+<p>Input a Category:</p>
 <input type="text" name="topic"/">
 <p><input type="submit" value="Check"></p>
 </form>
 
 <p>List:</p>
-{% for location in locations %}
-<div>{{location.location}}</div>
+{% for tweet in tweets %}
+----------------------------------------------------<br>	
+Tweet:
+<div>{{tweet.0}}</div>
+<div>Image: <img src="{{tweet.1}}"></div>
+<div>Username: {{tweet.2}}</div>
 {% endfor %}
