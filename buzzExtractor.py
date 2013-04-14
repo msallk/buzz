@@ -558,13 +558,19 @@ class BuzzExtractor:
 
 	wordList = {}
 
+	# the function need to be called
+	# pass the tweets list from tweetor API
+	# return a list of pairs, which consists of buzz and tweets associated with this buzz
+	def getCategorizedTweets(self, tweetList):
+		self.putTweets(tweetList)
+		buzzes = self.getPopularBuzz()
+		#return self.categorizeTweet(buzzes, tweetList)
+		self.printTweet(self.categorizeTweet(buzzes, tweetList))
+
 	def putTweets(self, tweetList):
 		for tweet in tweetList:
 			#print tweet[0]
-			self.putWords(tweet[0].lower())
-		tmp = self.getPopularBuzz()
-		for it in tmp:
-			print it
+			self.putWords(tweet[1].lower())
 
 	def getPopularBuzz(self):
 		sortList = sorted(self.wordList.iteritems(), key=operator.itemgetter(1))
@@ -579,6 +585,8 @@ class BuzzExtractor:
 			ret.append(sortList[i][0])
 		return ret
 
+	# how to split a tweet
+	# need refine
 	def splitTweet(self, tweet):
 		#tmp = tweet.split('\\.|,|\\(|\\)|;|:|[0-9]+[^ ]*')
 		#print len(tmp)
@@ -601,6 +609,29 @@ class BuzzExtractor:
 				self.wordList[word] = self.wordList[word] + 1
 			else:
 				self.wordList[word] = 1
+
+	# for debug
+	def printTweet(self, retList):
+		for pair in retList:
+			print '\n------------'
+			print pair[0]
+
+			for item in pair[1]:
+				print '\t*', item[0], item[1], item[2], item[3]
+
+
+	def categorizeTweet(self, buzzes, tweetList):
+		#get a empty ret list
+		ret = []
+		for buzz in buzzes:
+			ret.append((buzz, []));
+
+		#check each tweet with every buzz
+		for tweet in tweetList:
+			for pair in ret:
+				if pair[0] in tweet[1].lower():
+					pair[1].append(tweet);
+		return ret
 
 
 #test part

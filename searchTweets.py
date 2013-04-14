@@ -13,7 +13,7 @@ def searchTweets(category, geocode):
 	ret = []
 	for result in dict["results"]:
 		#print "*", result["text"], "\n"
-		ret.append((result["text"], result["profile_image_url"], result["from_user"]))
+		ret.append((result["from_user"], result["text"], result["profile_image_url"], result["from_user_name"]))
 	return ret
 
 
@@ -22,4 +22,4 @@ l = searchTweets("sport", ("37.421401","-122.08537"))
 #for i in range(0, len(l)):
 #	print "*", l[i][0], l[i][1], l[i][2]
 b = buzzExtractor.BuzzExtractor()
-b.putTweets(l)
+b.getCategorizedTweets(l)
