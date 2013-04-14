@@ -571,8 +571,10 @@ class BuzzExtractor:
 		buzzes = self.getPopularBuzz()
 		#for buzz in buzzes:
 		#	print buzz
-		return self.categorizeTweet(buzzes, tweetList)
 		#self.printTweet(self.categorizeTweet(buzzes, tweetList))
+		#return self.categorizeTweet(buzzes, tweetList)
+		#self.printTweet(self.categorizeTweet(buzzes, tweetList))
+		return self.categorizeTweet(buzzes, tweetList)
 
 	def putTweets(self, tweetList):
 		for tweet in tweetList:
@@ -631,7 +633,7 @@ class BuzzExtractor:
 		#get a empty ret list
 		ret = []
 		for buzz in buzzes:
-			ret.append((buzz, []));
+			ret.append([buzz, []]);
 
 		#check each tweet with every buzz
 		for tweet in tweetList:

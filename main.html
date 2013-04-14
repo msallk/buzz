@@ -8,10 +8,15 @@
 </form>
 
 <p>List:</p>
-{% for tweet in tweets %}
-----------------------------------------------------<br>	
+{% for buzz in tweets %}
+-----------------------------------------------------------------------------------<br>	
+<div>Buzz: {{buzz.0.0}} Sentiment: {{buzz.0.1}}</div>
+{% for tweet in buzz.1 %}
+-----------------------------------------------------<br>
 Tweet:
-<div>{{tweet.0}}</div>
-<div>Image: <img src="{{tweet.1}}"></div>
-<div>Username: {{tweet.2}}</div>
+<div>{{tweet.1}}</div>
+<div>Image: <img src="{{tweet.2}}"></div>
+<div>User: {{tweet.0}}</div>
+<div>Username: {{tweet.3}}</div>
+{% endfor %}
 {% endfor %}
