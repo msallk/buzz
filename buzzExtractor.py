@@ -565,13 +565,15 @@ class BuzzExtractor:
 	# pass the tweets list from tweetor API
 	# return a list of pairs, which consists of buzz and tweets associated with this buzz
 	def getCategorizedTweets(self, tweetList):
+		self.wordList = {}
 		self.putTweets(tweetList)
 		#for word in self.wordList:
 		#	print word
 		buzzes = self.getPopularBuzz()
 		#for buzz in buzzes:
 		#	print buzz
-		#self.printTweet(self.categorizeTweet(buzzes, tweetList))
+		print buzzes
+		self.printTweet(self.categorizeTweet(buzzes, tweetList))
 		#return self.categorizeTweet(buzzes, tweetList)
 		#self.printTweet(self.categorizeTweet(buzzes, tweetList))
 		return self.categorizeTweet(buzzes, tweetList)
@@ -582,6 +584,7 @@ class BuzzExtractor:
 			self.putWords(tweet[1].lower())
 
 	def getPopularBuzz(self):
+		sortList = []
 		sortList = sorted(self.wordList.iteritems(), key=operator.itemgetter(1))
 		sortList.reverse()
 		if len(sortList) < 10:
@@ -600,7 +603,7 @@ class BuzzExtractor:
 		words = tweet.split()
 		pattern = re.compile('[\W]', re.UNICODE)
 		for it in range(0, len(words)):
-			words[it] = str(pattern.sub('', words[it]))
+			words[it] = pattern.sub('', words[it]).encode('utf-8').strip()
 		return words
 
 	def putWords(self, tweet):
@@ -626,7 +629,7 @@ class BuzzExtractor:
 			print pair[0]
 
 			for item in pair[1]:
-				print '\t*', item[0], item[1], item[2], item[3]
+				print '\t*', item[0].encode('utf-8').strip(), item[1].encode('utf-8').strip(), item[2].encode('utf-8').strip(), item[3].encode('utf-8').strip()
 
 
 	def categorizeTweet(self, buzzes, tweetList):

@@ -7,16 +7,20 @@
 <p><input type="submit" value="Check"></p>
 </form>
 
-<p>List:</p>
+<p>Results:</p>
 {% for buzz in tweets %}
------------------------------------------------------------------------------------<br>	
-<div>Buzz: {{buzz.0.0}} Sentiment: {{buzz.0.1}}</div>
-{% for tweet in buzz.1 %}
------------------------------------------------------<br>
-Tweet:
-<div>{{tweet.1}}</div>
-<div>Image: <img src="{{tweet.2}}"></div>
-<div>User: {{tweet.0}}</div>
-<div>Username: {{tweet.3}}</div>
+<table border="1">
+<tr>
+<th>Buzz: {{buzz.0.0}}</th> <th>Sentiment: {{buzz.0.1}}</th>
+</tr>		
+{% for tweet in buzz.1|slice:":5" %}
+<tr>
+<td>Username: {{tweet.3}}</td>
+<td>{{tweet.1}}</td>
+<td><img src="{{tweet.2}}"></td> 
+<td>User: {{tweet.0}}</td> 
+</tr>
 {% endfor %}
+</table>
+<br>
 {% endfor %}

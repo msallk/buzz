@@ -24,7 +24,7 @@ class Tweet(db.Model):
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
-    	res = db.GqlQuery('SELECT * FROM Tweet')
+    	res = []
         result = []
         for r in res:
             result.append((r.content, r.image, r.username))
@@ -52,6 +52,10 @@ class MainPage(webapp2.RequestHandler):
                 tweet.put()
         #for i in range(0, len(result)):
         #    print result[i][0], result[i][1], result[i][2]
+        buzz = []
+        categorized = []
+        categorized2 = []
+        results = []
         buzz = buzzExtractor.BuzzExtractor()
         categorized = buzz.getCategorizedTweets(result)
         sAnalyzer = SentimentAnalysis.Analyzer()
@@ -85,12 +89,5 @@ class MainPage(webapp2.RequestHandler):
     def clearDatastore(self):
         db.delete(db.Query())
 
-class Guestbook(webapp2.RequestHandler):
-    def post(self):
-        self.response.out.write('<html><body>You wrote:<pre>')
-        self.response.out.write(cgi.escape(self.request.get('content')))
-        self.response.out.write('</pre></body></html>')
-
-app = webapp2.WSGIApplication([('/', MainPage),
-                              ('/sign', Guestbook)],
+app = webapp2.WSGIApplication([('/', MainPage)],
                               debug=True)

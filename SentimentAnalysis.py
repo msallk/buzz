@@ -8,9 +8,18 @@ class Analyzer:
 		return sum(map(lambda word: self.afinn.get(word, 0), content.lower().split()))
 	def analyzeList(self, tweets):
 		count = 0
+		sent = "Neutral"
 		for tweet in tweets:
 			count += self.analyzeTweet(tweet[1])
-		return count
+		if count > 8:
+			sent = "Positive"
+		if count < -8:
+			sent = "Negative"
+		if count > 25:
+			sent = "Very Positive"
+		if count < -25:
+			sent = "Very Negative"
+		return sent
 	def analyze(self, categorizedList):
 		for tweets in categorizedList:
 			tweets[0] = (tweets[0], self.analyzeList(tweets[1]))
